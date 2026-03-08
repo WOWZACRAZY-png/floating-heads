@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floating Head Sandbox</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #222; font-family: 'Courier New', Courier, monospace; }
+        canvas { display: block; }
+        
+        /* The Lobby Screen */
+        #lobby-container {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: white; padding: 30px; border: 4px solid cyan;
+            text-align: center; z-index: 20; color: black;
+            box-shadow: 8px 8px 0px black;
+        }
+        #lobby-container h1 { margin-top: 0; font-size: 24px; text-transform: uppercase; }
+        .input-group { margin-bottom: 15px; text-align: left; }
+        .input-group label { display: block; font-weight: bold; margin-bottom: 5px; }
+        .input-group input, .input-group select { 
+            width: 100%; padding: 8px; box-sizing: border-box; 
+            border: 2px solid black; font-family: inherit; font-size: 16px;
+        }
+        #join-btn {
+            background: cyan; border: 2px solid black; padding: 10px 20px;
+            font-size: 18px; font-weight: bold; cursor: pointer; text-transform: uppercase;
+            width: 100%; font-family: inherit;
+        }
+        #join-btn:hover { background: black; color: cyan; }
+
+        /* Pause Menu Overlay */
+        #pause-menu {
+            position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+            color: black; background: white; padding: 10px 20px; border: 2px solid cyan;
+            font-size: 16px; font-weight: bold; cursor: pointer; z-index: 20; text-align: center;
+            display: none; box-shadow: 4px 4px 0px black;
+        }
+
+        /* Minimalist Chat UI */
+        #chat-container {
+            position: absolute; bottom: 20px; left: 20px;
+            width: 300px; color: white; z-index: 10; display: none;
+        }
+        #messages {
+            height: 150px; overflow-y: auto; margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.8); padding: 10px; border: 2px solid cyan;
+            font-size: 14px;
+        }
+        #chat-form { display: flex; }
+        #chat-input { flex-grow: 1; padding: 8px; border: 2px solid cyan; outline: none; background: rgba(0,0,0,0.8); color: white; font-family: inherit;}
+        #chat-form button { background: cyan; border: 2px solid cyan; color: black; padding: 8px 15px; cursor: pointer; font-weight: bold; font-family: inherit;}
+    </style>
+</head>
+<body>
+    <div id="lobby-container">
+        <h1>Sandbox Entry</h1>
+        <div class="input-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" placeholder="Enter your name" maxlength="15">
+        </div>
+        <div class="input-group">
+            <label for="head-color">Head Color:</label>
+            <select id="head-color">
+                <option value="#556B2F">Olive Green</option>
+                <option value="#800000">Maroon</option>
+                <option value="#2F4F4F">Dark Slate</option>
+                <option value="#483D8B">Dark Slate Blue</option>
+                <option value="#B8860B">Dark Goldenrod</option>
+                <option value="#8B4513">Saddle Brown</option>
+            </select>
+        </div>
+        <button id="join-btn">Join Arena</button>
+    </div>
+
+    <div id="pause-menu">CLICK TO RESUME<br><small>(Use mouse for chat)</small></div>
+
+    <div id="chat-container">
+        <div id="messages"></div>
+        <form id="chat-form">
+            <input id="chat-input" autocomplete="off" placeholder="Type a message..." />
+            <button>Send</button>
+        </form>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
