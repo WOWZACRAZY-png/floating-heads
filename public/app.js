@@ -96,22 +96,19 @@ function createFaceTexture(colorHex, faceText, username) {
 }
 
 function addOtherPlayer(playerData) {
-    const geometry = new THREE.BoxGeometry(4, 4, 4); // Blocky heads
+    // Create a smaller, smooth sphere! 
+    // The first number (0.35) is the radius. Make it smaller/larger if you want!
+    const geometry = new THREE.SphereGeometry(0.35, 32, 16); 
     
-    // We create an array of materials. Only the front face gets the emoticon texture.
-    const blankMat = new THREE.MeshBasicMaterial({ color: playerData.color });
-    const faceMat = new THREE.MeshBasicMaterial({ 
-        map: createFaceTexture(playerData.color, playerData.face, playerData.name) 
-    });
+    // Spheres don't use the 6-sided array like boxes do. 
+    // We just wrap your face material around the whole sphere for maximum goofy factor.
+    const mesh = new THREE.Mesh(geometry, faceMat);
     
-    const materials = [blankMat, blankMat, blankMat, blankMat, faceMat, blankMat];
-    const mesh = new THREE.Mesh(geometry, materials);
+    // Keep our network ID attached so the laser still knows who to shove
+    mesh.userData = { id: playerData.id }; 
     
     mesh.position.set(playerData.x, playerData.y, playerData.z);
-    mesh.userData = { id: playerData.id };
     scene.add(mesh);
-    otherPlayers[playerData.id] = mesh;
-}
 
 // --- 4. MULTIPLAYER NETWORKING ---
 socket.on('current players', (players) => {
